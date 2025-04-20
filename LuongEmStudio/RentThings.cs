@@ -647,7 +647,7 @@ namespace LuongEmStudio
                 controller.ErrorMSG(lbmess1, "Chọn Loại sản phẩm trước đã");
                 return;
             }
-            if (string.IsNullOrEmpty(cbTypeSP.Text)) cbTypeSP.Text = "0";
+            if (string.IsNullOrEmpty(tbQTYthue.Text)) tbQTYthue.Text = "0";
 
             if (int.Parse(tbQTYthue.Text) == 0) return;
 

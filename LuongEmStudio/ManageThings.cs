@@ -72,7 +72,7 @@ namespace LuongEmStudio
             product.nameSP = tbNameSP.Text.Trim();
             product.typeSP = cbTypeSP.Text.Trim();
             product.sizeSP = tbSizeSP.Text.Trim();
-            product.PriceSP = decimal.Parse(Regex.Match(tbPriceSP.Text.Trim(), @"\d+(\.\d+)?").Value);
+            product.PriceSP = decimal.Parse(tbPriceSP.Text.Trim().Replace(",",".").Replace(" Vnđ",""));
             product.QtySP = int.Parse(tbQtySP.Text.Trim());
             product.DescSP = tbDescSP.Text.Trim();
 

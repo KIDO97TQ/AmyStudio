@@ -228,7 +228,7 @@ namespace LuongEmStudio.DataGetWay
             List<NpgsqlParameter> parameters = new List<NpgsqlParameter>();
             StringBuilder sql = new StringBuilder();
 
-            sql.Append(@"SELECT bok.status , scheduleddate as Thời_Gian_Make, namestaff as NV_Make, locationmake as Địa_Điểm_Make,user1.fullname as Tên_NV,
+            sql.Append(@"SELECT bok.status , scheduleddate as Thời_Gian_Make, namestaff as NV_Make, locationmake as Địa_Điểm_Make,user1.fullname as Tên_Khách,
                                 goi.servicename as Gói_Make, goi.price as Giá_Gói_Make,goi.moneycoc as Tiền_Cọc,  user1.facebookphone as liên_hệ_KH
                        FROM clothings.makeupbookings bok, clothings.makeupstaff us ,clothings.makeupservices goi, clothings.users user1 
                       WHERE  bok.idstaffmake = us.staffid  and user1.userid = bok.userid  and goi.serviceid =  bok.bookingid and EXTRACT(YEAR FROM scheduleddate) = @year ");

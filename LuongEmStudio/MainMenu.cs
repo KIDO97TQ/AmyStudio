@@ -187,7 +187,7 @@ namespace LuongEmStudio
         {
             if (speak == 0)
             {
-                await SpeakTextAsync("Amy Studio chúc cả nhà ngày mới tốt lành", "3302da9703af4c77a55cc9659b27aaef", 1);
+                //await SpeakTextAsync("Amy Studio chúc cả nhà ngày mới tốt lành", "3302da9703af4c77a55cc9659b27aaef", 1);
                 speak = 1;
             }
             DateTime now = DateTime.Now;
