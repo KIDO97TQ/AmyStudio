@@ -119,7 +119,8 @@ namespace LuongEmStudio
                 }
 
                 this.pathImage = ofdPhoto3.FileName;
-                this.fileExtension = Path.GetExtension(ofdPhoto3.FileName);
+                //this.fileExtension = Path.GetExtension(ofdPhoto3.FileName);
+                this.fileExtension = ".jpg";
             }
         }
 

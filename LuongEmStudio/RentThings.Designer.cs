@@ -83,10 +83,6 @@
             splitContainer4 = new SplitContainer();
             splitContainer8 = new SplitContainer();
             cbHuy = new RadioButton();
-            tbyear = new TextBox();
-            cbbyyear = new CheckBox();
-            cbBymoth = new CheckBox();
-            cbMoth = new ComboBox();
             cball = new RadioButton();
             cbreturn = new RadioButton();
             cbNotReturn = new RadioButton();
@@ -96,7 +92,13 @@
             label17 = new Label();
             label18 = new Label();
             textBox1 = new TextBox();
+            cbtheongay = new CheckBox();
+            cldNgay = new MonthCalendar();
             tbSumBorrowReturn = new Button();
+            tbyear = new TextBox();
+            cbbyyear = new CheckBox();
+            cbMoth = new ComboBox();
+            cbBymoth = new CheckBox();
             splitContainer14 = new SplitContainer();
             groupBox8 = new GroupBox();
             dtgvBorrowReturn = new DataGridView();
@@ -600,7 +602,7 @@
             // 
             // btthue
             // 
-            btthue.BackColor = Color.OldLace;
+            btthue.BackColor = Color.GreenYellow;
             btthue.ImageAlign = ContentAlignment.MiddleLeft;
             btthue.ImageIndex = 7;
             btthue.ImageList = imageList1;
@@ -868,10 +870,6 @@
             // splitContainer8.Panel1
             // 
             splitContainer8.Panel1.Controls.Add(cbHuy);
-            splitContainer8.Panel1.Controls.Add(tbyear);
-            splitContainer8.Panel1.Controls.Add(cbbyyear);
-            splitContainer8.Panel1.Controls.Add(cbBymoth);
-            splitContainer8.Panel1.Controls.Add(cbMoth);
             splitContainer8.Panel1.Controls.Add(cball);
             splitContainer8.Panel1.Controls.Add(cbreturn);
             splitContainer8.Panel1.Controls.Add(cbNotReturn);
@@ -884,9 +882,15 @@
             // 
             // splitContainer8.Panel2
             // 
+            splitContainer8.Panel2.Controls.Add(cbtheongay);
+            splitContainer8.Panel2.Controls.Add(cldNgay);
             splitContainer8.Panel2.Controls.Add(tbSumBorrowReturn);
+            splitContainer8.Panel2.Controls.Add(tbyear);
+            splitContainer8.Panel2.Controls.Add(cbbyyear);
+            splitContainer8.Panel2.Controls.Add(cbMoth);
+            splitContainer8.Panel2.Controls.Add(cbBymoth);
             splitContainer8.Size = new Size(1552, 167);
-            splitContainer8.SplitterDistance = 901;
+            splitContainer8.SplitterDistance = 661;
             splitContainer8.TabIndex = 0;
             // 
             // cbHuy
@@ -898,46 +902,6 @@
             cbHuy.TabIndex = 59;
             cbHuy.Text = "Đơn bị hủy";
             cbHuy.UseVisualStyleBackColor = true;
-            // 
-            // tbyear
-            // 
-            tbyear.Font = new Font("Arial Unicode MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 136);
-            tbyear.Location = new Point(673, 69);
-            tbyear.MaxLength = 4;
-            tbyear.Name = "tbyear";
-            tbyear.Size = new Size(105, 25);
-            tbyear.TabIndex = 58;
-            tbyear.KeyPress += tbyear_KeyPress;
-            // 
-            // cbbyyear
-            // 
-            cbbyyear.AutoSize = true;
-            cbbyyear.Location = new Point(782, 69);
-            cbbyyear.Name = "cbbyyear";
-            cbbyyear.Size = new Size(119, 28);
-            cbbyyear.TabIndex = 57;
-            cbbyyear.Text = "Theo năm";
-            cbbyyear.UseVisualStyleBackColor = true;
-            // 
-            // cbBymoth
-            // 
-            cbBymoth.AutoSize = true;
-            cbBymoth.Location = new Point(782, 20);
-            cbBymoth.Name = "cbBymoth";
-            cbBymoth.Size = new Size(129, 28);
-            cbBymoth.TabIndex = 55;
-            cbBymoth.Text = "Theo tháng";
-            cbBymoth.UseVisualStyleBackColor = true;
-            // 
-            // cbMoth
-            // 
-            cbMoth.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbMoth.FormattingEnabled = true;
-            cbMoth.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
-            cbMoth.Location = new Point(695, 16);
-            cbMoth.Name = "cbMoth";
-            cbMoth.Size = new Size(83, 32);
-            cbMoth.TabIndex = 54;
             // 
             // cball
             // 
@@ -1039,13 +1003,30 @@
             textBox1.TabIndex = 42;
             textBox1.Visible = false;
             // 
+            // cbtheongay
+            // 
+            cbtheongay.AutoSize = true;
+            cbtheongay.Location = new Point(242, 17);
+            cbtheongay.Name = "cbtheongay";
+            cbtheongay.Size = new Size(123, 28);
+            cbtheongay.TabIndex = 67;
+            cbtheongay.Text = "Theo ngày";
+            cbtheongay.UseVisualStyleBackColor = true;
+            cbtheongay.CheckedChanged += cbtheongay_CheckedChanged;
+            // 
+            // cldNgay
+            // 
+            cldNgay.Location = new Point(11, 0);
+            cldNgay.Name = "cldNgay";
+            cldNgay.TabIndex = 66;
+            // 
             // tbSumBorrowReturn
             // 
             tbSumBorrowReturn.BackColor = Color.PapayaWhip;
             tbSumBorrowReturn.ImageAlign = ContentAlignment.MiddleLeft;
             tbSumBorrowReturn.ImageKey = "find.png";
             tbSumBorrowReturn.ImageList = imageList1;
-            tbSumBorrowReturn.Location = new Point(17, 23);
+            tbSumBorrowReturn.Location = new Point(289, 97);
             tbSumBorrowReturn.Name = "tbSumBorrowReturn";
             tbSumBorrowReturn.Size = new Size(103, 45);
             tbSumBorrowReturn.TabIndex = 29;
@@ -1053,6 +1034,48 @@
             tbSumBorrowReturn.TextAlign = ContentAlignment.MiddleRight;
             tbSumBorrowReturn.UseVisualStyleBackColor = false;
             tbSumBorrowReturn.Click += tbSumBorrowReturn_Click;
+            // 
+            // tbyear
+            // 
+            tbyear.Font = new Font("Arial Unicode MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 136);
+            tbyear.Location = new Point(458, 59);
+            tbyear.MaxLength = 4;
+            tbyear.Name = "tbyear";
+            tbyear.Size = new Size(105, 25);
+            tbyear.TabIndex = 58;
+            tbyear.KeyPress += tbyear_KeyPress;
+            // 
+            // cbbyyear
+            // 
+            cbbyyear.AutoSize = true;
+            cbbyyear.Location = new Point(568, 58);
+            cbbyyear.Name = "cbbyyear";
+            cbbyyear.Size = new Size(119, 28);
+            cbbyyear.TabIndex = 57;
+            cbbyyear.Text = "Theo năm";
+            cbbyyear.UseVisualStyleBackColor = true;
+            cbbyyear.CheckedChanged += cbbyyear_CheckedChanged;
+            // 
+            // cbMoth
+            // 
+            cbMoth.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbMoth.FormattingEnabled = true;
+            cbMoth.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" });
+            cbMoth.Location = new Point(480, 6);
+            cbMoth.Name = "cbMoth";
+            cbMoth.Size = new Size(83, 32);
+            cbMoth.TabIndex = 54;
+            // 
+            // cbBymoth
+            // 
+            cbBymoth.AutoSize = true;
+            cbBymoth.Location = new Point(568, 9);
+            cbBymoth.Name = "cbBymoth";
+            cbBymoth.Size = new Size(129, 28);
+            cbBymoth.TabIndex = 55;
+            cbBymoth.Text = "Theo tháng";
+            cbBymoth.UseVisualStyleBackColor = true;
+            cbBymoth.CheckedChanged += cbBymoth_CheckedChanged;
             // 
             // splitContainer14
             // 
@@ -1095,6 +1118,7 @@
             dtgvBorrowReturn.ReadOnly = true;
             dtgvBorrowReturn.Size = new Size(897, 451);
             dtgvBorrowReturn.TabIndex = 1;
+            dtgvBorrowReturn.CellDoubleClick += dtgvBorrowReturn_CellDoubleClick;
             // 
             // groupBox7
             // 
@@ -1730,6 +1754,7 @@
             splitContainer8.Panel1.ResumeLayout(false);
             splitContainer8.Panel1.PerformLayout();
             splitContainer8.Panel2.ResumeLayout(false);
+            splitContainer8.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer8).EndInit();
             splitContainer8.ResumeLayout(false);
             splitContainer14.Panel1.ResumeLayout(false);
@@ -1893,5 +1918,7 @@
         private CheckBox cbkhachquen;
         private Label label19;
         private Button btcancel;
+        private CheckBox cbtheongay;
+        private MonthCalendar cldNgay;
     }
 }

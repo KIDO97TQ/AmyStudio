@@ -364,11 +364,11 @@ namespace LuongEmStudio.Core
         {
             return updateGW.CancelOrder(orderList);
         }
-        public List<RentalSummary> GetSumBorrowReturn(DataGridView dgv, string status, int year, int? month = null)
+        public List<RentalSummary> GetSumBorrowReturn(DataGridView dgv, string status, int year, int? month = null, int? day = null)
         {
             var result = new List<RentalSummary>();
 
-            ExecutionResult exe = selectGW.GetRentalSummary(status, year, month);
+            ExecutionResult exe = selectGW.GetRentalSummary(status, year, month, day);
             DataSet ds = (DataSet)exe.Anything;
             var data = new List<RentalSummary>();
             if (exe.Status && ds.Tables[0].Rows.Count > 0)
@@ -382,7 +382,7 @@ namespace LuongEmStudio.Core
                         Quantity = Convert.ToInt32(ds.Tables[0].Rows[i]["total_quantity"])
                     });
                 }
-                ExecutionResult exe1 = selectGW.GetRentalSummary1(status, year, month);
+                ExecutionResult exe1 = selectGW.GetRentalSummary1(status, year, month, day);
                 DataSet ds1 = (DataSet)exe1.Anything;
                 dgv.DataSource = ds1.Tables[0];
             }

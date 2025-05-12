@@ -21,6 +21,7 @@ namespace LuongEmStudio
         private Controller controller;
         BaseDataBorrowReturn baseDataBorrowReturn;
         private string producID = "";
+
         public RentThings()
         {
             InitializeComponent();
@@ -116,12 +117,13 @@ namespace LuongEmStudio
             }
 
             tbtotaltien.Text = ((int.Parse(Tiencoc.Replace("vnđ", "").Replace(",", "").Trim()) + int.Parse(priceperday.Replace("vnđ", "").Replace(",", "").Trim())) * int.Parse(QTYthue)).ToString("N0") + " vnđ";
+            //tbtotaltien.Text = ((int.Parse(Tiencoc.Replace("vnđ", "").Replace(",", "").Trim()) + int.Parse(priceperday.Replace("vnđ", "").Replace(",", "").Trim())) * int.Parse(QTYthue)).ToString("N0") + " vnđ";
 
             tbTongtiencoc.Text = (int.Parse(Tiencoc.Replace("vnđ", "").Replace(",", "").Trim()) * int.Parse(QTYthue)).ToString("N0") + " vnđ";
 
             tbTongtienthue.Text = (int.Parse(priceperday.Replace("vnđ", "").Replace(",", "").Trim()) * int.Parse(QTYthue)).ToString("N0") + " vnđ";
 
-            string addlist = typeSP + "-" + Tiencoc + "-" + QTYthue + "-" + notes + "-" + priceperday + "-" + size + "-" + this.producID + "-" + cbtienphatsinh.Text + "-" + tbtotaltien.Text;
+            string addlist = typeSP + "-" + Tiencoc + "-" + QTYthue + "-" + notes + "-" + priceperday + "-" + size + "-" + this.producID + "-" + cbtienphatsinh.Text + "-" + tbTongtienthue.Text;
 
             lblistsp.Items.Add(addlist);
 
@@ -301,67 +303,69 @@ namespace LuongEmStudio
         private void tbInfoKH_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            { HandleEnterPressed(); }
+        }
+        private void HandleEnterPressed()
+        {
+            if (string.IsNullOrEmpty(tbInfoKH.Text))
             {
-                if (string.IsNullOrEmpty(tbInfoKH.Text))
-                {
-                    controller.ErrorMSG(lbmess1, "Nhập thông khách để tìm đơn thuê");
-                    return;
-                }
-                ExecutionResult exeResults = controller.GetOrderNo(tbInfoKH.Text.Trim());
-                DataSet ds = (DataSet)exeResults.Anything;
-                if (exeResults.Status && ds.Tables[0].Rows.Count > 0)
-                {
-                    DataGridViewCheckBoxColumn checkBoxColumn = new DataGridViewCheckBoxColumn();
-                    checkBoxColumn.HeaderText = "Không trả";
-                    checkBoxColumn.Name = "checkColumn";
-                    checkBoxColumn.Width = 70;
-                    checkBoxColumn.TrueValue = true;
-                    checkBoxColumn.FalseValue = false;
-
-                    undo2();
-                    dgvProducSP.DataSource = ds.Tables[0];
-                    if (!dgvProducSP.Columns.Contains("checkColumn"))
-                    {
-                        dgvProducSP.Columns.Insert(0, checkBoxColumn); // Thêm vào đầu bảng
-                    }
-
-                    int tongtiencoc = 0, tongtiendathu = 0, tongTienPhatSinh = 0;
-
-                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                    {
-                        int tienCoc = int.Parse(ds.Tables[0].Rows[i]["moneycoc"].ToString().Replace(",", "").Replace("vnđ", "").Trim());
-                        int tienDaThu = int.Parse(ds.Tables[0].Rows[i]["totalamount"].ToString().Replace(",", "").Replace("vnđ", "").Trim());
-
-                        TimeZoneInfo vnZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-                        DateTime gioVN = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vnZone);
-
-                        DateTime ngayThue = Convert.ToDateTime(ds.Tables[0].Rows[i]["borrowdate"]);
-                        int tienPhatSinhMotNgay = int.Parse(ds.Tables[0].Rows[i]["tienphatsinh"].ToString());
-
-                        int soNgayThue = (gioVN.Date - ngayThue.Date).Days;
-                        int soNgayPhatSinh = Math.Max(soNgayThue - 1, 0); // trừ 1 ngày đầu
-
-                        int tienPhatSinh = soNgayPhatSinh * tienPhatSinhMotNgay;
-
-                        tongtiencoc += tienCoc;
-                        tongtiendathu += tienDaThu;
-                        tongTienPhatSinh += tienPhatSinh;
-                    }
-
-                    // Tổng tiền cần trả lại = Tổng tiền cọc - Tổng tiền phát sinh
-                    int tienCanTraLai = Math.Max(tongtiencoc - tongTienPhatSinh, 0);
-
-                    tballtiencocdathu.Text = tongtiencoc.ToString("N0") + " vnđ";
-                    tballTiendathu.Text = tongtiendathu.ToString("N0") + " vnđ";
-                    tbtongtiencantra.Text = tienCanTraLai.ToString("N0") + " vnđ";
-
-                    controller.SuccessMSG(lbmesModify, "Tìm đơn hàng ok:" + tbInfoKH.Text);
-                }
-                else
-                    controller.ErrorMSG(lbmesModify, "Không tìm thấy đơn nào theo thông tin này:" + tbInfoKH.Text);
-                tbInfoKH.SelectAll();
-                tbInfoKH.Focus();
+                controller.ErrorMSG(lbmess1, "Nhập thông khách để tìm đơn thuê");
+                return;
             }
+            ExecutionResult exeResults = controller.GetOrderNo(tbInfoKH.Text.Trim());
+            DataSet ds = (DataSet)exeResults.Anything;
+            if (exeResults.Status && ds.Tables[0].Rows.Count > 0)
+            {
+                DataGridViewCheckBoxColumn checkBoxColumn = new DataGridViewCheckBoxColumn();
+                checkBoxColumn.HeaderText = "Không trả";
+                checkBoxColumn.Name = "checkColumn";
+                checkBoxColumn.Width = 70;
+                checkBoxColumn.TrueValue = true;
+                checkBoxColumn.FalseValue = false;
+
+                undo2();
+                dgvProducSP.DataSource = ds.Tables[0];
+                if (!dgvProducSP.Columns.Contains("checkColumn"))
+                {
+                    dgvProducSP.Columns.Insert(0, checkBoxColumn); // Thêm vào đầu bảng
+                }
+
+                int tongtiencoc = 0, tongtiendathu = 0, tongTienPhatSinh = 0;
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    int tienCoc = int.Parse(ds.Tables[0].Rows[i]["moneycoc"].ToString().Replace(",", "").Replace("vnđ", "").Trim());
+                    int tienDaThu = int.Parse(ds.Tables[0].Rows[i]["totalamount"].ToString().Replace(",", "").Replace("vnđ", "").Trim());
+
+                    TimeZoneInfo vnZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                    DateTime gioVN = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vnZone);
+
+                    DateTime ngayThue = Convert.ToDateTime(ds.Tables[0].Rows[i]["borrowdate"]);
+                    int tienPhatSinhMotNgay = int.Parse(ds.Tables[0].Rows[i]["tienphatsinh"].ToString());
+
+                    int soNgayThue = (gioVN.Date - ngayThue.Date).Days;
+                    int soNgayPhatSinh = Math.Max(soNgayThue - 1, 0); // trừ 1 ngày đầu
+
+                    int tienPhatSinh = soNgayPhatSinh * tienPhatSinhMotNgay;
+
+                    tongtiencoc += tienCoc;
+                    tongtiendathu += tienDaThu;
+                    tongTienPhatSinh += tienPhatSinh;
+                }
+
+                // Tổng tiền cần trả lại = Tổng tiền cọc - Tổng tiền phát sinh
+                int tienCanTraLai = Math.Max(tongtiencoc - tongTienPhatSinh, 0);
+
+                tballtiencocdathu.Text = tongtiencoc.ToString("N0") + " vnđ";
+                tballTiendathu.Text = tongtiendathu.ToString("N0") + " vnđ";
+                tbtongtiencantra.Text = tienCanTraLai.ToString("N0") + " vnđ";
+
+                controller.SuccessMSG(lbmesModify, "Tìm đơn hàng ok:" + tbInfoKH.Text);
+            }
+            else
+                controller.ErrorMSG(lbmesModify, "Không tìm thấy đơn nào theo thông tin này:" + tbInfoKH.Text);
+            tbInfoKH.SelectAll();
+            tbInfoKH.Focus();
         }
 
         private void dgvProducSP_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -534,6 +538,7 @@ namespace LuongEmStudio
             DateTime gioVN = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vnZone);
             string status = "";
             int? moth = null;
+            int? day = null;
             int year = gioVN.Year;
 
             if (cball.Checked)
@@ -551,8 +556,14 @@ namespace LuongEmStudio
             if (cbBymoth.Checked && !string.IsNullOrEmpty(cbMoth.Text))
                 moth = int.Parse(cbMoth.Text);
 
+            if (cbtheongay.Checked)
+            {
+                DateTime selectedDate = cldNgay.SelectionStart;
+                day = selectedDate.Day;
+            }
+
             dtgvBorrowReturn.DataSource = null;
-            List<RentalSummary> sampleData = controller.GetSumBorrowReturn(dtgvBorrowReturn, status, year, moth);
+            List<RentalSummary> sampleData = controller.GetSumBorrowReturn(dtgvBorrowReturn, status, year, moth, day);
             CreateChartByDayAndType(sampleData);
             controller.SuccessMSG(lbmesModify, "Tìm kiếm hoàn thành");
         }
@@ -589,7 +600,8 @@ namespace LuongEmStudio
             {
                 ChartType = SeriesChartType.Column,
                 Color = Color.SteelBlue,
-                BorderWidth = 1
+                BorderWidth = 1,
+                IsValueShownAsLabel = true
             };
             totalSeries["PointWidth"] = "0.3";
 
@@ -781,6 +793,45 @@ namespace LuongEmStudio
                 }
 
             }
+        }
+
+        private void cbtheongay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbtheongay.Checked)
+            {
+                cbBymoth.Checked = false;
+                cbbyyear.Checked = false;
+            }
+        }
+
+        private void cbBymoth_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbBymoth.Checked)
+            {
+                cbtheongay.Checked = false;
+                cbbyyear.Checked = false;
+            }
+        }
+
+        private void cbbyyear_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbbyyear.Checked)
+            {
+                cbtheongay.Checked = false;
+                cbBymoth.Checked = false;
+            }
+        }
+
+        private void dtgvBorrowReturn_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tbInfoKH.Text = "";
+
+            string status = dtgvBorrowReturn.Rows[e.RowIndex].Cells[11].Value.ToString();
+            if (status == "RETURN")
+                return;
+            tbInfoKH.Text = dtgvBorrowReturn.Rows[e.RowIndex].Cells[1].Value.ToString();
+            tabControl1.SelectedIndex = 1;
+            this.HandleEnterPressed();
         }
     }
 }

@@ -316,7 +316,7 @@ namespace LuongEmStudio.DataGetWay
                     {
                         foreach (var id in orderList)
                         {
-                            using (var cmd = new NpgsqlCommand("UPDATE clothings.orders SET status='RETURN', returndate=@timereturn, lastmoney=@lastmoney WHERE orderid=@idorder", conn))
+                            using (var cmd = new NpgsqlCommand("UPDATE clothings.orders SET status='RETURN', returndate=@timereturn, lastmoney = totalamount WHERE orderid=@idorder", conn))
                             {
                                 cmd.Transaction = transaction;
                                 cmd.Parameters.AddWithValue("@idorder", id.Item1);

@@ -301,7 +301,7 @@ namespace LuongEmStudio.DataGetWay
             return DatabaseConnection.ExecuteQueryDS(query, parameters.ToArray());
         }
 
-        public ExecutionResult GetRentalSummary(string status, int year, int? month = null)
+        public ExecutionResult GetRentalSummary(string status, int year, int? month = null, int? day = null)
         {
             List<NpgsqlParameter> parameters = new List<NpgsqlParameter>();
             StringBuilder sql = new StringBuilder();
@@ -315,6 +315,12 @@ namespace LuongEmStudio.DataGetWay
                            WHERE EXTRACT(YEAR FROM b.borrowdate) = :year ");
 
             parameters.Add(new NpgsqlParameter("year", year));
+
+            if (day != null)
+            {
+                sql.Append(" AND (:ngay IS NULL OR EXTRACT(DAY FROM b.borrowdate) = :ngay) ");
+                parameters.Add(new NpgsqlParameter("ngay", day));
+            }
 
             if (month != null)
             {
@@ -332,7 +338,7 @@ namespace LuongEmStudio.DataGetWay
 
             return DatabaseConnection.ExecuteQueryDS(sql.ToString(), parameters.ToArray());
         }
-        public ExecutionResult GetRentalSummary1(string status, int year, int? month = null)
+        public ExecutionResult GetRentalSummary1(string status, int year, int? month = null, int? day = null)
         {
             List<NpgsqlParameter> parameters = new List<NpgsqlParameter>();
             StringBuilder sql = new StringBuilder();
@@ -345,6 +351,12 @@ namespace LuongEmStudio.DataGetWay
                            WHERE  EXTRACT(YEAR FROM b.borrowdate) = :year ");
 
             parameters.Add(new NpgsqlParameter("year", year));
+
+            if (day != null)
+            {
+                sql.Append(" AND (:ngay IS NULL OR EXTRACT(DAY FROM b.borrowdate) = :ngay) ");
+                parameters.Add(new NpgsqlParameter("ngay", day));
+            }
 
             if (month != null)
             {
@@ -366,11 +378,12 @@ namespace LuongEmStudio.DataGetWay
 
             sql.Append(@"SELECT o.borrowdate::date AS rental_date,
                                 p.type_production AS product_type,
-                                SUM(o.totalamount - o.moneycoc) AS revenue
+                                --SUM(o.totalamount - o.moneycoc) AS revenue
+                                SUM(o.totalamount) AS revenue
                           FROM clothings.orders o 
                           join clothings.products p on p.productid = o.productid
-                          WHERE status = 'BORROW'                    
-                            AND (:nam IS NULL OR EXTRACT(YEAR FROM borrowdate) = :nam) ");
+                          WHERE --status = 'BORROW'                    
+                             (:nam IS NULL OR EXTRACT(YEAR FROM borrowdate) = :nam) ");
 
             parameters.Add(new NpgsqlParameter("nam", year));
 
@@ -402,7 +415,7 @@ namespace LuongEmStudio.DataGetWay
 
             sql.Append(@"SELECT o.borrowdate::date AS rental_date,
                                 p.type_production AS product_type,
-                                SUM(o.lastmoney) AS revenue
+                                SUM(o.totalamount) AS revenue
                           FROM clothings.orders o 
                           join clothings.products p on p.productid = o.productid
                           WHERE status = 'RETURN'                    

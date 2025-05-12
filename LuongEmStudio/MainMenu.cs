@@ -16,7 +16,6 @@ namespace LuongEmStudio
     public partial class MainMenu : Form
     {
         Controller controller;
-        int speak = 0;
         public MainMenu()
         {
             InitializeComponent();
@@ -71,7 +70,7 @@ namespace LuongEmStudio
         }
         private async Task<string> GetLatestVersionAsync()
         {
-            string versionUrl = "https://github.com/kido20101997/LuongEmStudio/releases/download/v1.0.0/Ver.xml";
+            string versionUrl = "https://github.com/KIDO97TQ/LuongEmStudio/releases/download/v1.0.0/Ver.xml";
             using (HttpClient client = new HttpClient())
             {
                 return await client.GetStringAsync(versionUrl);
@@ -185,11 +184,6 @@ namespace LuongEmStudio
 
         private async void timer1_Tick(object sender, EventArgs e)
         {
-            if (speak == 0)
-            {
-                //await SpeakTextAsync("Amy Studio chúc cả nhà ngày mới tốt lành", "3302da9703af4c77a55cc9659b27aaef", 1);
-                speak = 1;
-            }
             DateTime now = DateTime.Now;
             DateTime remindBefore = now.AddMinutes(59);
 
